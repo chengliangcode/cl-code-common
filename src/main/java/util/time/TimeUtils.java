@@ -3,33 +3,40 @@ package util.time;
 import java.util.Calendar;
 
 /**
- * cl的时间工具
+ * cl的时间戳工具
  *
  * @author chengliang
  * @date 2022/6/8 16:18
  */
 public class TimeUtils {
 
-    public static Long getCurrentTime() {
+    public static Long getCurrentTimestamp() {
         return System.currentTimeMillis();
     }
 
-    public static Long getTodayTime() {
-        return System.currentTimeMillis();
+    public static Long getTodayTimestamp() {
+        return InterceptTimestamp(getCalendarInstance()).getTimeInMillis();
     }
 
-    public static void main(String[] args) {
-        long currentTimeMillis = System.currentTimeMillis();
-        long l = currentTimeMillis >> 5;
-        System.out.println(l);
-//        Calendar instance = Calendar.getInstance();
-//        instance.setTimeInMillis(currentTimeMillis);
-//        instance.set(Calendar.HOUR_OF_DAY, 0);
-//        instance.set(Calendar.MINUTE, 0);
-//        instance.set(Calendar.SECOND, 0);
-//        instance.set(Calendar.MILLISECOND, 0);
-//        System.out.println(instance.getTime().getTime());
+    public static Long getTomorrowTimestamp() {
+
+        Calendar calendar = getCalendarInstance();
+        calendar.add(Calendar.DATE, 1);
+        return InterceptTimestamp(calendar).getTimeInMillis();
     }
 
+    private static Calendar getCalendarInstance() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(getCurrentTimestamp());
+        return calendar;
+    }
+
+    private static Calendar InterceptTimestamp(Calendar calendar) {
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar;
+    }
 
 }
